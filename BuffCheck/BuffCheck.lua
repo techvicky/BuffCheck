@@ -10,7 +10,7 @@ BuffCheck.BuffList = LoadLUAData("\\Interface\\BuffCheck\\bufflist.txt") or {}
 -----------------------------------------------
 local _BuffCheck = {
 	dwVersion = 0x0060700,
-	szBuildDate = "20130223",
+	szBuildDate = "20130224",
 	tSkillCache = {},
 	tBuffCache = {}
 }
@@ -328,12 +328,13 @@ BuffCheck.RaidGrid_CheckTeamVersion = function()
 		local memberinfo = hTeam.GetMemberInfo(dwID)
 		if memberinfo then
 			if dwID == GetClientPlayer().dwID  or BuffCheck.RaidGrid_CheckTeamVersionData[memberinfo.szName] then
-				table.insert(tCache,{szName = memberinfo.szName , dwMountKungfuID = memberinfo.dwMountKungfuID , b = true})
+				table.insert(tCache,{szName = memberinfo.szName , dwMountKungfuID = memberinfo.dwMountKungfuID , b = true , v = BuffCheck.RaidGrid_CheckTeamVersionData[memberinfo.szName] or 10})
 			else
-				table.insert(tCache,{szName = memberinfo.szName , dwMountKungfuID = memberinfo.dwMountKungfuID ,b = false})
+				table.insert(tCache,{szName = memberinfo.szName , dwMountKungfuID = memberinfo.dwMountKungfuID , b = false , v = -1})
 			end
 		end
-	end	
+	end
+	table.sort(tCache,function(a,b)	return (a.v > b.v) end)
 	BuffCheck.Talk("【团队事件监控检查】")
 	local a = table.getn(tCache)
 	local n = 0
@@ -341,7 +342,9 @@ BuffCheck.RaidGrid_CheckTeamVersion = function()
 		if not v.b then
 			n = n + 1
 			BuffCheck.Talk(FormatString("【<D0>】<D1> 未安装",BuffCheck.GetKungfuName(v.dwMountKungfuID),v.szName))
-			
+		else
+			if v.v == 10 then v.v = "检查者" end
+			BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2>",BuffCheck.GetKungfuName(v.dwMountKungfuID),v.szName,v.v))
 		end
 	end
 	BuffCheck.Talk(FormatString("检查完毕 人数 <D0>/<D1>",n,a))
@@ -769,10 +772,10 @@ function BuffCheck.GetMenuList()
 				fnAction = function()
 					if GetClientPlayer().IsInParty() then
 						BuffCheck.RaidGrid_CheckTeamVersionData = {}
-						BuffCheck.Talk("【团队事件监控版本检查指令发出】")
+						--BuffCheck.Talk("【团队事件监控版本检查指令发出】")
 						RaidGrid_Base.CheckTeamVersion()
 						local szText = "<Text>text="..EncodeComponentsString(" 【检查】团队监控版本 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 已经发出获取指令 建议等待 2-3 秒后在执行发布") .. " font=16 </text>"
-						BuffCheck.Confirm(szText,BuffCheck.RaidGrid_CheckTeamVersion,nil,"发布缺漏","取消")
+						BuffCheck.Confirm(szText,BuffCheck.RaidGrid_CheckTeamVersion,nil,"发布结果","取消")
 					else
 						OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
 					end
@@ -800,9 +803,9 @@ RegisterEvent("ON_BG_CHANNEL_MSG",function()
 	local t = player.GetTalkData()
 	if t and t[2] and RaidGrid_Base and RaidGrid_Base.CheckTeamVersion then
 		if t[2].text == "ShareEventScrutinyVersion" and t[4] and player.szName == t[4].text then
-			BuffCheck.Talk(t[3].text)
+			--BuffCheck.Talk(t[3].text)
 			local _, _, nP,nP2 = string.find(t[3].text, "[[](.*)]版本：V(.*)") -- [xxx]
-			BuffCheck.RaidGrid_CheckTeamVersionData[nP] = nP2
+			BuffCheck.RaidGrid_CheckTeamVersionData[nP] = tonumber(nP2)
 		end
 	end
 end)
