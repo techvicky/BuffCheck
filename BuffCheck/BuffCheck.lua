@@ -9,8 +9,8 @@ BuffCheck.BuffList = LoadLUAData("\\Interface\\BuffCheck\\bufflist.txt") or {}
 -- 本地函数和变量
 -----------------------------------------------
 local _BuffCheck = {
-	dwVersion = 0x0060700,
-	szBuildDate = "20130224",
+	dwVersion = 0x0060a00,
+	szBuildDate = "20130312",
 	tSkillCache = {},
 	tBuffCache = {}
 }
@@ -789,7 +789,6 @@ end
 
 
 
-
 RegisterEvent("LOGIN_GAME", function()
 	local tMenu = {
 		function()
@@ -804,8 +803,8 @@ RegisterEvent("ON_BG_CHANNEL_MSG",function()
 	if t and t[2] and RaidGrid_Base and RaidGrid_Base.CheckTeamVersion then
 		if t[2].text == "ShareEventScrutinyVersion" and t[4] and player.szName == t[4].text then
 			--BuffCheck.Talk(t[3].text)
-			local _, _, nP,nP2 = string.find(t[3].text, "[[](.*)]版本：V(.*)") -- [xxx]
-			BuffCheck.RaidGrid_CheckTeamVersionData[nP] = tonumber(nP2)
+			local _, _, nP,nP2,nP3 = string.find(t[3].text, "[[](.*)]版本：V(%d+).(%d+)")
+			BuffCheck.RaidGrid_CheckTeamVersionData[nP] = tonumber(nP2.."."..nP3)
 		end
 	end
 end)
