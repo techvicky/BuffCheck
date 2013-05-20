@@ -9,8 +9,8 @@ BuffCheck.BuffList = LoadLUAData("\\Interface\\BuffCheck\\bufflist.txt") or {}
 -- 本地函数和变量
 -----------------------------------------------
 local _BuffCheck = {
-	dwVersion = 0x0060a00,
-	szBuildDate = "20130312",
+	dwVersion = 0x0070000,
+	szBuildDate = "20130520",
 	tSkillCache = {},
 	tBuffCache = {}
 }
@@ -350,6 +350,52 @@ BuffCheck.RaidGrid_CheckTeamVersion = function()
 	BuffCheck.Talk(FormatString("检查完毕 人数 <D0>/<D1>",n,a))
 	BuffCheck.RaidGrid_CheckTeamVersionData = {}
 end
+
+
+-----------------------------------------------
+-- FightState
+-----------------------------------------------
+BuffCheck.CheckFightState = function()
+	local tFightState = {}
+	local tMemberList,hTeam = BuffCheck.GetMemberList()
+	for _, dwID in pairs(tMemberList) do
+		local tMemberInfo = hTeam.GetMemberInfo(dwID)
+		if tMemberInfo then
+			local player = GetPlayer(dwID)
+			if player then
+				local bFightState = player.bFightState
+				table.insert(tFightState, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), bFightState = bFightState })
+			else
+				table.insert(tFightState, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), bFightState = 2 })
+			end
+		end
+	end
+	local a = table.getn(tFightState)
+	local n = 0
+	for k, v in pairs(tFightState) do
+		if v.bFightState then
+			n = n + 1
+			if v.bFightState == 2 then
+				BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2> 不在范围内",v.szKungfu,v.szName,v.v))
+			else
+				BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2> 战斗中",v.szKungfu,v.szName,v.v))
+			end
+		end
+	end
+	BuffCheck.Talk(FormatString("检查完毕 人数 <D0>/<D1>",n,a))
+end
+
+BuffCheck.EquipScoreStatisticTalk = function()
+	if not BuffCheck.EquipScoreStatisticData then return end
+	table.sort(BuffCheck.EquipScoreStatisticData, function(a, b) return (a.nScore > b.nScore) end)
+	BuffCheck.Talk("【装备分检查结果如下】")
+	for _, v in pairs(BuffCheck.EquipScoreStatisticData) do
+		BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2>分",v.szKungfu,v.szName,v.nScore))
+	end
+	BuffCheck.Talk("装备分检查发布完毕")
+	OutputWarningMessage("MSG_WARNING_GREEN", "发布完毕，请查看相应的频道。",6)
+end
+
 
 
 BuffCheck.tBuffTypeNames = {
@@ -784,6 +830,21 @@ function BuffCheck.GetMenuList()
 
 		table.insert(menu, menu_7)
 	end
+	local menu_8 = {
+			szOption = "【检查】战斗状态检查 ",
+			szIcon = "ui/Image/UICommon/Talk_Face.UITex";nFrame=119;szLayer = "ICON_RIGHT",
+			fnMouseEnter = function() 
+				BuffCheck.MenuTip("【战斗状态检查】\n 就是战斗状态检查啦…… 叫你丫的不脱离")
+			end,
+			fnAction = function()
+				if GetClientPlayer().IsInParty() then
+					BuffCheck.CheckFightState()
+				else
+					OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
+				end
+			end
+		}
+	table.insert(menu, menu_8)
 	return menu
 end
 
