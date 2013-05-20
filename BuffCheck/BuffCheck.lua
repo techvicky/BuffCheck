@@ -370,6 +370,7 @@ BuffCheck.CheckFightState = function()
 			end
 		end
 	end
+	BuffCheck.Talk("【战斗状态检查】")
 	local a = table.getn(tFightState)
 	local n = 0
 	for k, v in pairs(tFightState) do
@@ -385,16 +386,7 @@ BuffCheck.CheckFightState = function()
 	BuffCheck.Talk(FormatString("检查完毕 人数 <D0>/<D1>",n,a))
 end
 
-BuffCheck.EquipScoreStatisticTalk = function()
-	if not BuffCheck.EquipScoreStatisticData then return end
-	table.sort(BuffCheck.EquipScoreStatisticData, function(a, b) return (a.nScore > b.nScore) end)
-	BuffCheck.Talk("【装备分检查结果如下】")
-	for _, v in pairs(BuffCheck.EquipScoreStatisticData) do
-		BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2>分",v.szKungfu,v.szName,v.nScore))
-	end
-	BuffCheck.Talk("装备分检查发布完毕")
-	OutputWarningMessage("MSG_WARNING_GREEN", "发布完毕，请查看相应的频道。",6)
-end
+
 
 
 
