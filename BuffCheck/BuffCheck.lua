@@ -3,14 +3,12 @@ BuffCheck = BuffCheck or {}
 BuffCheck.KungfuGroup = LoadLUAData("\\Interface\\BuffCheck\\KungfuGroup.dat") or {}
 BuffCheck.BuffList = LoadLUAData("\\Interface\\BuffCheck\\bufflist.txt") or {}
 
-
-
 -----------------------------------------------
 -- 本地函数和变量
 -----------------------------------------------
 local _BuffCheck = {
-	dwVersion = 0x0070000,
-	szBuildDate = "20130520",
+	dwVersion = 0x0070100,
+	szBuildDate = "20130527",
 	tSkillCache = {},
 	tBuffCache = {}
 }
@@ -138,36 +136,65 @@ end
 BuffCheck.EquipScoreStatistic = function()
 	local EquipScoreStatisticCache = {}
 	local tMemberList,hTeam = BuffCheck.GetMemberList()
+	local Delay = 1
 	for _, dwID in pairs(tMemberList) do
 		local tMemberInfo = hTeam.GetMemberInfo(dwID)
 		local hMember = GetPlayer(dwID)
 		if hMember and tMemberInfo then
 			local nEquipScore = hMember.GetTotalEquipScore()
-			if nEquipScore == 0 then
-				ViewInviteToPlayer(dwID)
-				nEquipScore = hMember.GetTotalEquipScore()
+			if HM and HM.DelayCall then
+				if nEquipScore == 0 then
+					HM.DelayCall(50,function()
+						ViewInviteToPlayer(dwID)
+					end)
+					HM.DelayCall(150,function()
+						nEquipScore = hMember.GetTotalEquipScore()
+						table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
+					end)
+				else
+					Delay = Delay + 1
+					table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
+				end
 			else
-				table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
+				if nEquipScore == 0 then
+					ViewInviteToPlayer(dwID)
+				else
+					table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
+				end
 			end
+		else
+			Delay = Delay + 1
 		end
 	end
-	local a,n = table.getn(tMemberList),table.getn(EquipScoreStatisticCache)
-	BuffCheck.EquipScoreStatisticData = EquipScoreStatisticCache		
-	if n < a then
-		local szText = "<Text>text="..EncodeComponentsString(" 【装备分检查】 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 获取到了 ") .. " font=16 </text><Text>text="..EncodeComponentsString(n) .." font=2 </text><Text>text="..EncodeComponentsString(" 个玩家的装备分 这和团队总玩家数 ") .. " font=16 </text><Text>text="..EncodeComponentsString(a) .." font=2 </text><Text>text="..EncodeComponentsString(" 不匹配\n 可能是玩家不在视线范围内，也可能是首次获取数据不全。") .. "font=16 </text>"
-		BuffCheck.Confirm(szText,BuffCheck.EquipScoreStatisticTalk,BuffCheck.EquipScoreStatistic,"发布统计","重新获取")
+	if HM and HM.DelayCall then
+		BuffCheck.Talk(PLAYER_TALK_CHANNEL.LOCAL_SYS,"[BuffCheck] 检查中请稍后... 时间取决于有多少人")
+		HM.DelayCall(151 * (table.getn(tMemberList) - Delay),function()
+			local a,n = table.getn(tMemberList),table.getn(EquipScoreStatisticCache)
+			BuffCheck.EquipScoreStatisticData = EquipScoreStatisticCache		
+			BuffCheck.EquipScoreStatisticTalk(n,a)
+		end)
 	else
-		local szText = "<Text>text="..EncodeComponentsString(" 【装备分检查】 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 已经获取到了全团 ") .. " font=16 </text><Text>text="..EncodeComponentsString(n) .." font=2 </text><Text>text="..EncodeComponentsString(" 个玩家的装备分 ") .. "font=16 </text>"
-		BuffCheck.Confirm(szText,BuffCheck.EquipScoreStatisticTalk,nil,"发布统计","取消")
+		local a,n = table.getn(tMemberList),table.getn(EquipScoreStatisticCache)
+		BuffCheck.EquipScoreStatisticData = EquipScoreStatisticCache		
+		if n < a then
+			local szText = "<Text>text="..EncodeComponentsString(" 【装备分检查】 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 获取到了 ") .. " font=16 </text><Text>text="..EncodeComponentsString(n) .." font=2 </text><Text>text="..EncodeComponentsString(" 个玩家的装备分 这和团队总玩家数 ") .. " font=16 </text><Text>text="..EncodeComponentsString(a) .." font=2 </text><Text>text="..EncodeComponentsString(" 不匹配\n 可能是玩家不在视线范围内，也可能是首次获取数据不全。") .. "font=16 </text>"
+			BuffCheck.Confirm(szText,BuffCheck.EquipScoreStatisticTalk,BuffCheck.EquipScoreStatistic,"发布统计","重新获取")
+		else
+			local szText = "<Text>text="..EncodeComponentsString(" 【装备分检查】 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 已经获取到了全团 ") .. " font=16 </text><Text>text="..EncodeComponentsString(n) .." font=2 </text><Text>text="..EncodeComponentsString(" 个玩家的装备分 ") .. "font=16 </text>"
+			BuffCheck.Confirm(szText,BuffCheck.EquipScoreStatisticTalk,nil,"发布统计","取消")
+		end
 	end
 end
 
-BuffCheck.EquipScoreStatisticTalk = function()
+BuffCheck.EquipScoreStatisticTalk = function(n,a)
 	if not BuffCheck.EquipScoreStatisticData then return end
 	table.sort(BuffCheck.EquipScoreStatisticData, function(a, b) return (a.nScore > b.nScore) end)
 	BuffCheck.Talk("【装备分检查结果如下】")
 	for _, v in pairs(BuffCheck.EquipScoreStatisticData) do
 		BuffCheck.Talk(FormatString("【<D0>】<D1>：<D2>分",v.szKungfu,v.szName,v.nScore))
+	end
+	if n and a then
+		BuffCheck.Talk(FormatString("已检查<D0>/<D1>人 其余不在范围内",n,a))
 	end
 	BuffCheck.Talk("装备分检查发布完毕")
 	OutputWarningMessage("MSG_WARNING_GREEN", "发布完毕，请查看相应的频道。",6)
@@ -754,11 +781,7 @@ function BuffCheck.GetMenuList()
 			bCheck = false,
 			bChecked = false,
 			fnAction = function()
-				if GetClientPlayer().IsInParty() then
-					BuffCheck.CheckAllMember()
-				else
-					OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
-				end
+				BuffCheck.KeyDown(1)
 			end,
 			fnMouseEnter = function()
 				BuffCheck.MenuTip("【小吃分数检查 专治各种坑爹货】\n100满分，低于50分说明吃的小吃不在内置列表内或不足4小吃，建议使用缺漏检查。")
@@ -771,11 +794,7 @@ function BuffCheck.GetMenuList()
 			bCheck = false,
 			bChecked = false,
 			fnAction = function()
-				if GetClientPlayer().IsInParty() then
-					BuffCheck.QuickCheckAll()
-				else				
-					OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
-				end
+				BuffCheck.KeyDown(2)
 			end,
 			fnMouseEnter = function()
 				BuffCheck.MenuTip("【小吃缺漏检查 专治各种浑水摸鱼】\n不分小吃好坏，符合4小吃都算通过，不在内置列表也无所谓。")
@@ -789,11 +808,8 @@ function BuffCheck.GetMenuList()
 				BuffCheck.MenuTip("【装备分检查 可能会有顿卡】\n请确保所有成员都在视野范围内，否则会造成数据不完整，请执行至少2次该操作。")
 			end,
 			fnAction = function()
-				if GetClientPlayer().IsInParty() then
-					BuffCheck.EquipScoreStatistic()
-				else
-					OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
-				end
+				BuffCheck.KeyDown(3)
+
 			end
 		}
 	table.insert(menu, {bDevide = true})
@@ -808,15 +824,7 @@ function BuffCheck.GetMenuList()
 					BuffCheck.MenuTip("RaidGrid_Base.CheckTeamVersion")
 				end,
 				fnAction = function()
-					if GetClientPlayer().IsInParty() then
-						BuffCheck.RaidGrid_CheckTeamVersionData = {}
-						--BuffCheck.Talk("【团队事件监控版本检查指令发出】")
-						RaidGrid_Base.CheckTeamVersion()
-						local szText = "<Text>text="..EncodeComponentsString(" 【检查】团队监控版本 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 已经发出获取指令 建议等待 2-3 秒后在执行发布") .. " font=16 </text>"
-						BuffCheck.Confirm(szText,BuffCheck.RaidGrid_CheckTeamVersion,nil,"发布结果","取消")
-					else
-						OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
-					end
+					BuffCheck.KeyDown(4)
 				end
 			}
 
@@ -829,11 +837,7 @@ function BuffCheck.GetMenuList()
 				BuffCheck.MenuTip("【战斗状态检查】\n 就是战斗状态检查啦…… 叫你丫的不脱离")
 			end,
 			fnAction = function()
-				if GetClientPlayer().IsInParty() then
-					BuffCheck.CheckFightState()
-				else
-					OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
-				end
+				BuffCheck.KeyDown(5)
 			end
 		}
 	table.insert(menu, menu_8)
@@ -861,3 +865,55 @@ RegisterEvent("ON_BG_CHANNEL_MSG",function()
 		end
 	end
 end)
+
+-----------------------------------------------
+-- AddBinding
+-----------------------------------------------
+
+
+BuffCheck.KeyDown = function(n)
+	if GetClientPlayer().IsInParty() then
+		if n == 1 then
+			BuffCheck.CheckAllMember()
+		end
+		if n == 2 then
+			BuffCheck.QuickCheckAll()
+		end
+		if n == 3 then
+			BuffCheck.EquipScoreStatistic()
+		end
+		if n == 4 then
+			BuffCheck.Talk(PLAYER_TALK_CHANNEL.LOCAL_SYS,"[BuffCheck] 检查中请稍后... 时间取决于有多少人")
+			BuffCheck.RaidGrid_CheckTeamVersionData = {}
+			RaidGrid_Base.CheckTeamVersion()
+			if HM and HM.DelayCall then
+				HM.DelayCall(50*32,BuffCheck.RaidGrid_CheckTeamVersion)
+			else
+			local szText = "<Text>text="..EncodeComponentsString(" 【检查】团队监控版本 检查时间："..BuffCheck.GetTimeString().."\n") .." font=207 </text><Text>text="..EncodeComponentsString("\n 已经发出获取指令 建议等待 2-3 秒后在执行发布") .. " font=16 </text>"
+				BuffCheck.Confirm(szText,BuffCheck.RaidGrid_CheckTeamVersion,nil,"发布结果","取消")
+			end
+		end
+		if n == 5 then
+			BuffCheck.CheckFightState()
+		end
+	else				
+		OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
+	end
+end
+
+
+Hotkey.AddBinding("CheckAllMember", "小吃评分检查", "BuffCheck",function()
+	BuffCheck.KeyDown(1)
+end,nil)
+Hotkey.AddBinding("QuickCheckAll", "小吃缺漏检查", "",function()
+	BuffCheck.KeyDown(2)
+end,nil)
+Hotkey.AddBinding("EquipScoreStatistic", "装备分数检查", "",function()
+	BuffCheck.KeyDown(3)
+end,nil)
+Hotkey.AddBinding("test", "团队插件检查", "",function()
+	BuffCheck.KeyDown(4)
+end,nil)
+Hotkey.AddBinding("CheckFightState", "战斗状态检查", "",function()
+	BuffCheck.KeyDown(5)
+end,nil)
