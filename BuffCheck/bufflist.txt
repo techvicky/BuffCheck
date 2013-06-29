@@ -69,175 +69,119 @@ data=
   },
   [2] = 
   {
-    [6] = 
+    [1] = 
     {
-      ["nLevel"] = 6,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "提神汤（内功破防）",
+      ["szName"] = "[佳·君子知身汤]（身法）",
       ["szType"] = "烹饪辅助品",
-      ["dwID"] = 4837,
+      ["dwID"] = 6056,
     },
     [2] = 
     {
-      ["nLevel"] = 15,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "扒松肉（根骨）",
+      ["szName"] = "[佳·八珍强体汤]（体质）",
       ["szType"] = "烹饪辅助品",
-      ["dwID"] = 2887,
-      ["nKungfuType"] = 0,
+      ["dwID"] = 6038,
     },
     [3] = 
     {
-      ["nLevel"] = 16,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "蒜香凤爪（元气）",
+      ["szName"] = "[佳·逍遥固元汤]（元气）",
       ["szType"] = "烹饪辅助品",
-      ["dwID"] = 2887,
-      ["nKungfuType"] = 12,
-    },
-    [1] = 
-    {
-      ["nLevel"] = 17,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "青椒脆骨（身法）",
-      ["szType"] = "烹饪辅助品",
-      ["dwID"] = 2887,
-      ["nKungfuType"] = 0,
+      ["dwID"] = 6045,
     },
     [4] = 
     {
-      ["nLevel"] = 14,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "酥脆软骨（力道）",
+      ["szName"] = "[佳·安荣力劲汤]（力道）",
       ["szType"] = "烹饪辅助品",
-      ["dwID"] = 2887,
-      ["nKungfuType"] = 0,
+      ["dwID"] = 6041,
     },
     [5] = 
     {
-      ["nLevel"] = 13,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "酱腌鸡爪（体质）",
+      ["szName"] = "[佳·白芷增骨汤]（根骨）",
       ["szType"] = "烹饪辅助品",
-      ["dwID"] = 2887,
-      ["nKungfuType"] = 0,
+      ["dwID"] = 6039,
     },
   },
   [3] = 
   {
-    [6] = 
+    [1] = 
     {
       ["nLevel"] = 1,
       ["tScore"] = 
       {
-        [1] = 10,
+        [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "香辣蹄髈（命中）",
+      ["szName"] = "[佳·虎皮凤爪]（内功破防）",
       ["szType"] = "烹饪增强品",
-      ["dwID"] = 2890,
+      ["dwID"] = 6067,
       ["nKungfuType"] = 0,
     },
     [2] = 
     {
-      ["nLevel"] = 6,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "碳烤软骨（外功攻击）",
+      ["szName"] = "[佳·合饼卷菜]（内会伤）",
       ["szType"] = "烹饪增强品",
-      ["dwID"] = 3341,
+      ["dwID"] = 6068,
       ["nKungfuType"] = 0,
     },
     [3] = 
     {
-      ["nLevel"] = 8,
+      ["nLevel"] = 1,
       ["tScore"] = 
       {
-        [1] = 10,
+        [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "炝炒肉排（内功攻击）",
+      ["szName"] = "[佳·佛手排骨]（外会伤）",
       ["szType"] = "烹饪增强品",
-      ["dwID"] = 3341,
-      ["nKungfuType"] = 0,
-    },
-    [1] = 
-    {
-      ["nLevel"] = 9,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "藤椒农家肉（外功攻击）",
-      ["szType"] = "烹饪增强品",
-      ["dwID"] = 3341,
+      ["dwID"] = 6069,
       ["nKungfuType"] = 0,
     },
     [4] = 
     {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "熏烤蹄髈（内功攻击）",
-      ["szType"] = "烹饪增强品",
-      ["dwID"] = 3341,
-      ["nKungfuType"] = 0,
-    },
-    [5] = 
-    {
       ["nLevel"] = 1,
       ["tScore"] = 
       {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "蒜香口条（你懂的）",
-      ["szType"] = "烹饪增强品",
-      ["dwID"] = 2891,
-      ["nKungfuType"] = 0,
-    },
-    [7] = 
-    {
-      ["nLevel"] = 7,
-      ["tScore"] = 
-      {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "焦炙肉扒（治疗）",
+      ["szName"] = "[佳·芋丝蒸肉糕]（外功破防）",
       ["szType"] = "烹饪增强品",
-      ["dwID"] = 3341,
+      ["dwID"] = 6066,
       ["nKungfuType"] = 0,
     },
   },
@@ -350,137 +294,72 @@ data=
   },
   [4] = 
   {
-    [7] = 
-    {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "下品补筋丹（根骨）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 292,
-      ["nKungfuType"] = 0,
-    },
     [1] = 
     {
-      ["nLevel"] = 5,
+      ["nLevel"] = 2,
       ["tScore"] = 
       {
-        [1] = 10,
+        [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "下品强身丹（身法）",
+      ["szName"] = "[尚·栀仁香囊]（根骨）",
       ["szType"] = "医术辅助品",
-      ["dwID"] = 299,
+      ["dwID"] = 6049,
       ["nKungfuType"] = 0,
     },
     [2] = 
     {
-      ["nLevel"] = 6,
+      ["nLevel"] = 2,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "中品强身丹（身法）",
+      ["szName"] = "[尚·百花香囊]（体质）",
       ["szType"] = "医术辅助品",
-      ["dwID"] = 299,
-      ["nKungfuType"] = 0,
-    },
-    [4] = 
-    {
-      ["nLevel"] = 6,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品聚魂丹（元气）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 293,
-      ["nKungfuType"] = 0,
-    },
-    [8] = 
-    {
-      ["nLevel"] = 6,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品补筋丹（根骨）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 292,
-      ["nKungfuType"] = 0,
-    },
-    [9] = 
-    {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "下品健骨丹（力道）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 294,
-      ["nKungfuType"] = 0,
-    },
-    [5] = 
-    {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "下品护心丹（体质）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 302,
-      ["nKungfuType"] = 0,
-    },
-    [10] = 
-    {
-      ["nLevel"] = 6,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品健骨丹（力道）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 294,
+      ["dwID"] = 6048,
       ["nKungfuType"] = 0,
     },
     [3] = 
     {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "下品聚魂丹（元气）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 293,
-      ["nKungfuType"] = 0,
-    },
-    [6] = 
-    {
-      ["nLevel"] = 6,
+      ["nLevel"] = 2,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "中品护心丹（体质）",
+      ["szName"] = "[尚·柏桂香囊]（力道）",
       ["szType"] = "医术辅助品",
-      ["dwID"] = 302,
+      ["dwID"] = 6050,
       ["nKungfuType"] = 0,
     },
-    [12] = 
+    [4] = 
+    {
+      ["nLevel"] = 2,
+      ["tScore"] = 
+      {
+        [1] = 20,
+      },
+      ["bOn"] = true,
+      ["szName"] = "[尚·桂枝香囊]（身法）",
+      ["szType"] = "医术辅助品",
+      ["dwID"] = 6052,
+      ["nKungfuType"] = 0,
+    },
+    [5] = 
+    {
+      ["nLevel"] = 2,
+      ["tScore"] = 
+      {
+        [1] = 20,
+      },
+      ["bOn"] = true,
+      ["szName"] = "[尚·紫荷香囊]（元气）",
+      ["szType"] = "医术辅助品",
+      ["dwID"] = 6051,
+      ["nKungfuType"] = 0,
+    },
+    [6] = 
     {
       ["nLevel"] = 7,
       ["tScore"] = 
@@ -488,153 +367,51 @@ data=
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "壮骨香囊（内功会心伤害）",
+      ["szName"] = "[壮骨香囊]（内会伤）",
       ["szType"] = "医术辅助品",
       ["dwID"] = 4838,
+      ["nKungfuType"] = 0,
     },
-    [11] = 
+    [7] = 
     {
-      ["nLevel"] = 6,
+      ["nLevel"] = 8,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "提神香囊（内功破防）",
+      ["szName"] = "[润肺香囊]（外会伤）",
       ["szType"] = "医术辅助品",
       ["dwID"] = 4838,
+      ["nKungfuType"] = 0,
     },
   },
   [5] = 
   {
-    [7] = 
-    {
-      ["nLevel"] = 1,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "万花丹（外功会心）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 303,
-      ["nKungfuType"] = 0,
-    },
     [1] = 
     {
-      ["nLevel"] = 3,
+      ["nLevel"] = 2,
       ["tScore"] = 
       {
-        [1] = 10,
+        [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "下品展凤丹（内功攻击）",
+      ["szName"] = "[尚·上品万花丹]（外会伤）",
       ["szType"] = "医术增强品",
-      ["dwID"] = 301,
+      ["dwID"] = 6327,
       ["nKungfuType"] = 0,
     },
     [2] = 
     {
-      ["nLevel"] = 4,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品展凤丹（内功攻击）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 301,
-      ["nKungfuType"] = 0,
-    },
-    [4] = 
-    {
-      ["nLevel"] = 6,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品亢龙丹（外功攻击）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 340,
-      ["nKungfuType"] = 0,
-    },
-    [8] = 
-    {
       ["nLevel"] = 2,
       ["tScore"] = 
       {
         [1] = 20,
       },
       ["bOn"] = true,
-      ["szName"] = "中品万花丹（外功会心）",
+      ["szName"] = "[尚·上品玉露丹]（内会心）",
       ["szType"] = "医术增强品",
-      ["dwID"] = 303,
-      ["nKungfuType"] = 0,
-    },
-    [9] = 
-    {
-      ["nLevel"] = 1,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品聚神丹（外功命中）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 2908,
-      ["nKungfuType"] = 0,
-    },
-    [5] = 
-    {
-      ["nLevel"] = 2,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品玉露散（内功会心）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 288,
-      ["nKungfuType"] = 0,
-    },
-    [10] = 
-    {
-      ["nLevel"] = 1,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "中品聚元丹（内功命中）",
-      ["szType"] = "医术辅助品",
-      ["dwID"] = 2907,
-      ["nKungfuType"] = 0,
-    },
-    [3] = 
-    {
-      ["nLevel"] = 5,
-      ["tScore"] = 
-      {
-        [1] = 10,
-      },
-      ["bOn"] = true,
-      ["szName"] = "下品亢龙丹（外功攻击）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 340,
-      ["nKungfuType"] = 0,
-    },
-    [6] = 
-    {
-      ["nLevel"] = 3,
-      ["tScore"] = 
-      {
-        [1] = 20,
-      },
-      ["bOn"] = true,
-      ["szName"] = "上品玉露散（内功会心）",
-      ["szType"] = "医术增强品",
-      ["dwID"] = 288,
+      ["dwID"] = 6055,
       ["nKungfuType"] = 0,
     },
   },

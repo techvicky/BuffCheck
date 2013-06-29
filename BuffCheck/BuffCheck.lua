@@ -7,8 +7,8 @@ BuffCheck.BuffList = LoadLUAData("\\Interface\\BuffCheck\\bufflist.txt") or {}
 -- 本地函数和变量
 -----------------------------------------------
 local _BuffCheck = {
-	dwVersion = 0x0070100,
-	szBuildDate = "20130527",
+	dwVersion = 0x0080000,
+	szBuildDate = "20130630",
 	tSkillCache = {},
 	tBuffCache = {}
 }
@@ -28,7 +28,6 @@ BuffCheckData = {
 		[19] = true,
 		[20] = true,
 		[24] = false,
-		["danzhong"] = false,
 		["jiaozi"] = false,
 	},
 }
@@ -131,6 +130,126 @@ BuffCheck.MenuTip = function(str)
 end
 
 -----------------------------------------------
+-- 应该吃什么药发送小吃发送
+
+-- 你当前应该吃的小药种类Table
+-- 2=烹饪辅助品 3=烹饪增强品 4=医术辅助品 5=医术增强品
+-- [内功ID] [种类] [itemID]
+-----------------------------------------------
+-- 吃你妹表
+BuffCheck.Food = {
+	--外功
+	[10026] = { -- 傲雪
+		[2] = {5,19442}, --力道紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19516}, --力道紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10224] = { -- 鲸鱼
+		[2] = {5,19442}, --力道紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19516}, --力道紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10268] = { -- GB?有待测试
+		[2] = {5,19442}, --力道紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19516}, --力道紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10144] = { -- 问水
+		[2] = {5,19444}, --身法紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19518}, --身法紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10145] = { -- 山居剑意
+		[2] = {5,19444}, --身法紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19518}, --身法紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10015] = { -- 太虚
+		[2] = {5,19444}, --身法紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19518}, --身法紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	-- 内功
+	[10242] = { -- 10242 焚影圣诀
+		[2] = {5,19443}, --元气紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19517}, --元气紫色
+		[5] = {5,19527}, --会效紫色
+	},	
+	[10175] = { -- 10175 毒经
+		[2] = {5,19441}, --根骨紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19515}, --根骨紫色
+		[5] = {5,19527}, --会效紫色
+	},
+	[10003] = { -- 易筋经
+		[2] = {5,19443}, --元气紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19517}, --元气紫色
+		[5] = {5,19527}, --会效紫色
+	},
+	[10014] = { -- 气纯
+		[2] = {5,19441}, --根骨紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19515}, --根骨紫色
+		[5] = {5,19527}, --会效紫色
+	},
+	[10081] = { -- 冰心
+		[2] = {5,19441}, --根骨紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19515}, --根骨紫色
+		[5] = {5,19527}, --会效紫色
+	},
+	[10225] = { -- 天罗
+		[2] = {5,19443}, --元气紫色
+		[3] = {5,19456}, --会效紫色
+		[4] = {5,19517}, --元气紫色
+		[5] = {5,19528}, --会效紫色
+	},
+	[10021] = { -- 花间
+		[2] = {5,19444}, --元气紫色
+		[3] = {5,19455}, --会效紫色
+		[4] = {5,19517}, --元气紫色
+		[5] = {5,19527}, --会效紫色
+	},	
+}
+
+
+
+
+BuffCheck.Notice = function()
+	local szName = "[]"
+	local me = GetClientPlayer()
+	local tab = {2,3,4,5}
+	local tMemberList,hTeam = BuffCheck.GetMemberList()
+	for _, dwID in pairs(tMemberList) do
+		local tMemberInfo = hTeam.GetMemberInfo(dwID)
+		local t = {{type = "text", text = "作为一个合格的有职业道德的很风骚的"..BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID).." 你必须要有\n"}}
+		me.Talk(PLAYER_TALK_CHANNEL.WHISPER,tMemberInfo.szName,t)
+		if BuffCheck.Food[tMemberInfo.dwMountKungfuID] then
+			for k,v in pairs(tab) do
+				local t = {
+					{type = "text", text = BuffCheck.tBuffTypeNames[v]},
+					{type = "iteminfo", text = szName, version = GLOBAL.CURRENT_ITEM_VERSION, tabtype = BuffCheck.Food[tMemberInfo.dwMountKungfuID][v][1], index = BuffCheck.Food[tMemberInfo.dwMountKungfuID][v][2]},
+				}
+				me.Talk(PLAYER_TALK_CHANNEL.WHISPER,tMemberInfo.szName,t)
+			end
+		else
+			local t = {{type = "text", text = "我不要求你吃小药 你丫的给我好好打！"}}
+			me.Talk(PLAYER_TALK_CHANNEL.WHISPER,tMemberInfo.szName,t)
+		end
+	end
+end
+
+
+
+-----------------------------------------------
 -- 装备分查询
 -----------------------------------------------
 BuffCheck.EquipScoreStatistic = function()
@@ -144,15 +263,16 @@ BuffCheck.EquipScoreStatistic = function()
 			local nEquipScore = hMember.GetTotalEquipScore()
 			if HM and HM.DelayCall then
 				if nEquipScore == 0 then
-					HM.DelayCall(50,function()
+					Delay = Delay + 1
+					HM.DelayCall(5 * Delay,function()
 						ViewInviteToPlayer(dwID)
 					end)
-					HM.DelayCall(150,function()
+					HM.DelayCall(300 * Delay,function()
 						nEquipScore = hMember.GetTotalEquipScore()
+						BuffCheck.Talk(PLAYER_TALK_CHANNEL.LOCAL_SYS,"[DEBUG]："..tMemberInfo.szName..nEquipScore)
 						table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
 					end)
 				else
-					Delay = Delay + 1
 					table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
 				end
 			else
@@ -162,13 +282,12 @@ BuffCheck.EquipScoreStatistic = function()
 					table.insert(EquipScoreStatisticCache, { dwID = dwID, szName = tMemberInfo.szName, szKungfu = BuffCheck.GetKungfuName(tMemberInfo.dwMountKungfuID), nScore = nEquipScore })
 				end
 			end
-		else
-			Delay = Delay + 1
 		end
 	end
 	if HM and HM.DelayCall then
-		BuffCheck.Talk(PLAYER_TALK_CHANNEL.LOCAL_SYS,"[BuffCheck] 检查中请稍后... 时间取决于有多少人")
-		HM.DelayCall(151 * (table.getn(tMemberList) - Delay),function()
+		BuffCheck.Talk(PLAYER_TALK_CHANNEL.LOCAL_SYS,"[BuffCheck] 检查中请稍后... \n下面会显示进度…")
+		HM.DelayCall(350 * Delay,function()
+			--BuffCheck.Talk("[Delay]："..Delay)
 			local a,n = table.getn(tMemberList),table.getn(EquipScoreStatisticCache)
 			BuffCheck.EquipScoreStatisticData = EquipScoreStatisticCache		
 			BuffCheck.EquipScoreStatisticTalk(n,a)
@@ -273,7 +392,6 @@ BuffCheck.QuickCheckAll = function()
 			[18] = "增强食品",
 			[19] = "辅助药品",
 			[20] = "增强药品",
-			["danzhong"] = "膻中",
 			["jiaozi"] = "饺子",
 		}
 		if hPlayer then
@@ -293,8 +411,6 @@ BuffCheck.QuickCheckAll = function()
 				if bTimeEnough then
 					if tInfo[3] == 24 then
 						tClass[24] = nil
-					elseif tBuff.dwID == 1171 and tBuff.nLevel==1 then
-						tClass["danzhong"] = nil
 					elseif tBuff.dwID == 1594 and (tBuff.nLevel==1 or tBuff.nLevel==2) then
 						tClass["jiaozi"] = nil
 					elseif tInfo[3] ~= 0 then
@@ -600,14 +716,6 @@ function BuffCheck.GetMenuList()
 			},
 			{bDevide = true},
 			{
-				szOption = "检查膻中", bCheck = true, bChecked = BuffCheckData.QuickCheckType["danzhong"], fnAction = function(UserData, bCheck)
-					BuffCheckData.QuickCheckType["danzhong"] = bCheck
-				end,
-				fnMouseEnter = function()
-					BuffCheck.MenuTip("缺漏检查时 检查推血的Buff膻中。")
-				end,
-			},
-			{
 				szOption = "检查宴席", bCheck = true, bChecked = BuffCheckData.QuickCheckType[24], fnAction = function(UserData, bCheck)
 					BuffCheckData.QuickCheckType[24] = bCheck
 				end,
@@ -841,6 +949,19 @@ function BuffCheck.GetMenuList()
 			end
 		}
 	table.insert(menu, menu_8)
+	local menu_9 ={bDevide = true}
+	local menu_10 = {
+			szOption = "【发布】告诉他们吃啥 ",
+			szIcon = "ui/Image/UICommon/Talk_Face.UITex";nFrame=33;szLayer = "ICON_RIGHT",
+			fnMouseEnter = function() 
+				BuffCheck.MenuTip("就是告诉他们吃啥。。要改的话自己改一下BuffCheck.lua")
+			end,
+			fnAction = function()
+				BuffCheck.KeyDown(6)
+			end
+		}
+	table.insert(menu, menu_9)
+	table.insert(menu, menu_10)
 	return menu
 end
 
@@ -895,6 +1016,9 @@ BuffCheck.KeyDown = function(n)
 		end
 		if n == 5 then
 			BuffCheck.CheckFightState()
+		end
+		if n == 6 then
+			BuffCheck.Notice()
 		end
 	else				
 		OutputWarningMessage("MSG_WARNING_YELLOW", "你不在队伍中，无法执行该操作。",6)
